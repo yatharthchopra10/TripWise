@@ -1,7 +1,3 @@
-/* TripWise – Frontend track
- * Destinations: REST Countries (primary) with an open-data backup + local cache.
- * Weather: Open-Meteo. No API keys needed.
- */
 const COUNTRIES_API = "https://restcountries.com/v3.1";
 const BACKUP_API = "https://cdn.jsdelivr.net/gh/mledoze/countries@master/dist/countries.json";
 const WEATHER_API = "https://api.open-meteo.com/v1/forecast";
@@ -10,7 +6,6 @@ const STORAGE_KEY = "tripwise.itinerary.v1";
 const CACHE_KEY = "tripwise.countries.cache.v1";
 const THEME_KEY = "tripwise.theme";
 
-// REST Countries allows a maximum of 10 fields on /all
 const LIST_FIELDS = "name,cca3,capital,region,subregion,population,area,flags,latlng,languages";
 const EXTRA_FIELDS = "cca3,currencies,timezones,borders,car";
 const PAGE_SIZE = 24;
@@ -28,7 +23,6 @@ const state = {
   filtered: [],
 };
 
-/* ================= HELPERS ================= */
 const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const fmt = (n) => (typeof n === "number" ? n.toLocaleString("en-IN") : "—");
 const compact = (n) => (typeof n === "number" ? new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 }).format(n) : "—");
@@ -72,7 +66,6 @@ function animateNumber(el, to) {
   requestAnimationFrame(step);
 }
 
-/* ================= THEME ================= */
 function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
   $("#themeToggle").textContent = theme === "dark" ? "🌙" : "☀️";
@@ -84,7 +77,6 @@ function initTheme() {
   applyTheme(saved || "dark");
 }
 
-/* ================= ITINERARY (localStorage) ================= */
 function loadTrip() {
   try {
     const raw = JSON.parse(localStorage.getItem(STORAGE_KEY));
@@ -137,7 +129,6 @@ function moveItem(code, dir) {
   renderTrip();
 }
 
-/* ================= DATA LOADING ================= */
 function normalizeBackup(c) {
   const cca2 = (c.cca2 || "").toLowerCase();
   return {
@@ -206,7 +197,6 @@ async function loadCountries() {
   renderGrid();
 }
 
-/* ================= EXPLORE ================= */
 function showSkeletons() {
   $("#grid").innerHTML = Array.from({ length: 8 }, () => '<div class="skeleton"></div>').join("");
   $("#resultCount").textContent = "Loading destinations…";
@@ -319,7 +309,6 @@ function resetFilters() {
   if (state.loaded) renderGrid();
 }
 
-/* ================= DETAILS ================= */
 const WEATHER_CODES = {
   0: ["☀️", "Clear sky"], 1: ["🌤️", "Mostly clear"], 2: ["⛅", "Partly cloudy"], 3: ["☁️", "Overcast"],
   45: ["🌫️", "Fog"], 48: ["🌫️", "Rime fog"], 51: ["🌦️", "Light drizzle"], 53: ["🌦️", "Drizzle"], 55: ["🌧️", "Heavy drizzle"],
@@ -425,7 +414,6 @@ async function loadWeather(c, code) {
   }
 }
 
-/* ================= MY TRIP ================= */
 function renderTrip() {
   const list = $("#tripList");
   const empty = $("#tripEmpty");
@@ -495,7 +483,6 @@ function downloadItinerary() {
   URL.revokeObjectURL(a.href);
 }
 
-/* ================= NAVIGATION & EVENTS ================= */
 function showView(name) {
   $$(".view").forEach((v) => (v.hidden = v.id !== `view-${name}`));
   $$(".tab").forEach((t) => t.classList.toggle("active", t.dataset.view === name));
@@ -565,7 +552,6 @@ dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
 dlg.addEventListener("close", () => document.body.classList.remove("modal-open"));
 new MutationObserver(() => document.body.classList.toggle("modal-open", dlg.open)).observe(dlg, { attributes: true, attributeFilter: ["open"] });
 
-/* ================= INIT ================= */
 initTheme();
 saveTrip();
 showView(location.hash === "#trip" ? "trip" : "explore");
