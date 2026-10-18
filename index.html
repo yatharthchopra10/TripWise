@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TripWise – Smart Travel Planner</title>
+  <meta name="description" content="Explore destinations around the world, check the weather, and build your own itinerary." />
+  <meta name="theme-color" content="#060912" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#explore" data-view="explore" aria-label="TripWise home">
+        <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+          <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb84d"/><stop offset="1" stop-color="#ff5e62"/></linearGradient></defs>
+          <rect width="32" height="32" rx="9" fill="url(#lg)"/>
+          <path d="M7 17.5 25 8l-5.2 16-4.3-5.6-3 3.1-.6-4.8L7 17.5Z" fill="#fff"/>
+        </svg>
+        <span>Trip<b>Wise</b></span>
+      </a>
+      <nav class="tabs" aria-label="Main">
+        <button class="tab active" data-view="explore">Explore</button>
+        <button class="tab" data-view="trip">My Trip <span class="badge" id="tripCount">0</span></button>
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle light or dark theme" title="Toggle theme">🌙</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- ================= EXPLORE ================= -->
+    <section id="view-explore" class="view">
+      <div class="hero">
+        <span class="eyebrow">✦ Plan smarter · Travel further</span>
+        <h1>Your next adventure<br />starts <span class="grad">right here</span></h1>
+        <p>Discover places across the globe, check the weather before you go, and shape a trip that's truly yours.</p>
+
+        <div class="searchbox">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="search" type="search" placeholder="Search a country or capital…" aria-label="Search destinations" autocomplete="off" />
+          <kbd>/</kbd>
+          <button class="btn sm" id="surprise" type="button">🎲 Surprise me</button>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><b id="statTotal">0</b><span>Destinations</span></div>
+          <div class="stat"><b id="statRegions">0</b><span>Regions</span></div>
+          <div class="stat"><b id="statTrip">0</b><span>In your trip</span></div>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="chips" id="chips" role="group" aria-label="Filter by region">
+          <button class="chip active" data-region="">All</button>
+          <button class="chip" data-region="Africa">Africa</button>
+          <button class="chip" data-region="Americas">Americas</button>
+          <button class="chip" data-region="Asia">Asia</button>
+          <button class="chip" data-region="Europe">Europe</button>
+          <button class="chip" data-region="Oceania">Oceania</button>
+        </div>
+        <div class="toolbar-right">
+          <label class="select">
+            <span class="sr">Sort by</span>
+            <select id="sort" aria-label="Sort results">
+              <option value="name-asc">Name · A–Z</option>
+              <option value="name-desc">Name · Z–A</option>
+              <option value="pop-desc">Population · High → Low</option>
+              <option value="pop-asc">Population · Low → High</option>
+              <option value="area-desc">Area · Large → Small</option>
+            </select>
+          </label>
+          <button id="reset" class="btn ghost sm" type="button">Reset</button>
+        </div>
+      </div>
+
+      <p id="resultCount" class="muted count" aria-live="polite"></p>
+      <div id="grid" class="grid"></div>
+      <div id="state" class="state" hidden></div>
+      <div id="moreWrap" class="more-wrap" hidden><button id="more" class="btn ghost" type="button">Show more</button></div>
+    </section>
+
+    <!-- ================= MY TRIP ================= -->
+    <section id="view-trip" class="view" hidden>
+      <div class="hero compact">
+        <span class="eyebrow">🧳 Your itinerary</span>
+        <h1>My <span class="grad">Trip</span></h1>
+        <p id="tripSummary">Your saved destinations appear here.</p>
+      </div>
+
+      <div id="tripStats" class="stats"></div>
+
+      <div class="trip-toolbar" id="tripToolbar">
+        <button class="btn ghost sm" data-action="copy" type="button">📋 Copy itinerary</button>
+        <button class="btn ghost sm" data-action="download" type="button">⬇ Download .txt</button>
+        <button class="btn danger sm" id="clearTrip" type="button">Clear all</button>
+      </div>
+
+      <div id="tripList" class="timeline"></div>
+
+      <div id="tripEmpty" class="state" hidden>
+        <div class="state-icon float">🧳</div>
+        <h3>Your itinerary is empty</h3>
+        <p>Browse destinations and tap <b>+</b> to start building your dream trip.</p>
+        <button class="btn" data-view="explore">Explore destinations</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= DETAILS ================= -->
+  <dialog id="details" aria-labelledby="dTitle">
+    <button class="close" id="closeDetails" aria-label="Close details">✕</button>
+    <div id="detailsBody"></div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <footer class="wrap footer">
+    <span>Built for the AWS Student Builder Group · VIT Chennai</span>
+    <span>Data: <a href="https://restcountries.com" target="_blank" rel="noopener">REST Countries</a> ·
+    Weather: <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a></span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
