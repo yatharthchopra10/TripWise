@@ -5,7 +5,7 @@
 
 TripWise lets you explore destinations around the world, view useful details (including a live weather forecast), and build a personal itinerary that survives page refreshes.
 
-**Live demo:** `<add your deployed link here>`
+**Live demo:** `https://yatharthchopra10.github.io/TripWise/#explore`
 **Repository:** `https://github.com/yatharthchopra10/TripWise`
 
 ## Features
@@ -38,18 +38,13 @@ Both main APIs are free for non-commercial use and are credited in the app foote
 ## Run locally
 
 ```bash
-git clone <your-repo-url>
+git clone <https://github.com/yatharthchopra10/TripWise>
 cd tripwise
 # option 1: just open index.html in a browser
 # option 2: serve it
 python3 -m http.server 8000
 # then visit http://localhost:8000
 ```
-
-## Deploy (free)
-
-**GitHub Pages:** push the repo → Settings → Pages → Deploy from branch `main` / root.
-**Vercel / Netlify:** import the repo, framework "Other", no build command, output directory `/`.
 
 ## Project structure
 
